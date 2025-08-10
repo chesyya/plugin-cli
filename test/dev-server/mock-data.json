@@ -1,0 +1,49 @@
+{
+  "extensions": [
+    {
+      "id": "test-publisher.test-plugin",
+      "name": "test-plugin",
+      "version": "alpha-1.1.0",
+      "publisher": "test-publisher",
+      "displayName": "Test Plugin",
+      "description": "A test plugin with menubar/plugin contribution (Alpha)",
+      "tags": ["test", "development"],
+      "categories": ["Other"],
+      "releaseTag": "alpha",
+      "lastUpdated": "2024-01-20T14:30:00Z",
+      "engines": {
+        "vscode": "^1.74.0"
+      }
+    },
+    {
+      "id": "test-publisher.test-plugin",
+      "name": "test-plugin",
+      "version": "beta-1.0.5",
+      "publisher": "test-publisher",
+      "displayName": "Test Plugin",
+      "description": "A test plugin with menubar/plugin contribution (Beta)",
+      "tags": ["test", "development"],
+      "categories": ["Other"],
+      "releaseTag": "beta",
+      "lastUpdated": "2024-01-18T16:45:00Z",
+      "engines": {
+        "vscode": "^1.74.0"
+      }
+    },
+    {
+      "id": "dev-tools.debugger-pro",
+      "name": "debugger-pro",
+      "version": "beta-3.0.0",
+      "publisher": "dev-tools",
+      "displayName": "Debugger Pro",
+      "description": "Advanced debugging tools for developers (Beta)",
+      "tags": ["debugger", "development", "tools"],
+      "categories": ["Debuggers"],
+      "releaseTag": "beta",
+      "lastUpdated": "2024-01-22T11:20:00Z",
+      "engines": {
+        "vscode": "^1.70.0"
+      }
+    }
+  ]
+}

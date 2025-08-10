@@ -1,0 +1,34 @@
+{
+  "extensions": [
+    {
+      "id": "test-publisher.test-plugin",
+      "name": "test-plugin",
+      "version": "1.0.0",
+      "publisher": "test-publisher",
+      "displayName": "Test Plugin",
+      "description": "A test plugin with menubar/plugin contribution",
+      "tags": ["test", "development"],
+      "categories": ["Other"],
+      "releaseTag": "release",
+      "lastUpdated": "2024-01-15T10:00:00Z",
+      "engines": {
+        "vscode": "^1.74.0"
+      }
+    },
+    {
+      "id": "example.theme-extension",
+      "name": "theme-extension",
+      "version": "2.1.3",
+      "publisher": "example",
+      "displayName": "Example Theme",
+      "description": "A beautiful color theme for VS Code",
+      "tags": ["theme", "dark", "light"],
+      "categories": ["Themes"],
+      "releaseTag": "release",
+      "lastUpdated": "2024-01-10T09:15:00Z",
+      "engines": {
+        "vscode": "^1.60.0"
+      }
+    }
+  ]
+}
