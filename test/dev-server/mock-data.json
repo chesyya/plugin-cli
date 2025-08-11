@@ -3,7 +3,7 @@
     {
       "id": "test-publisher.test-plugin",
       "name": "test-plugin",
-      "version": "alpha-1.1.0",
+      "version": "1.1.0",
       "publisher": "test-publisher",
       "displayName": "Test Plugin",
       "description": "A test plugin with menubar/plugin contribution (Alpha)",
@@ -18,7 +18,7 @@
     {
       "id": "test-publisher.test-plugin",
       "name": "test-plugin",
-      "version": "beta-1.0.5",
+      "version": "1.0.5",
       "publisher": "test-publisher",
       "displayName": "Test Plugin",
       "description": "A test plugin with menubar/plugin contribution (Beta)",
@@ -33,7 +33,7 @@
     {
       "id": "dev-tools.debugger-pro",
       "name": "debugger-pro",
-      "version": "beta-3.0.0",
+      "version": "3.0.0",
       "publisher": "dev-tools",
       "displayName": "Debugger Pro",
       "description": "Advanced debugging tools for developers (Beta)",

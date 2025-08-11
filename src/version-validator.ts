@@ -71,17 +71,8 @@ export class VersionValidator {
       const serverVersion = extension.version;
       result.serverVersion = serverVersion;
 
-      // Extract base versions for comparison (handle alpha-x.x.x format)
-      const extractBaseVersion = (version: string): string => {
-        const prefixMatch = version.match(/^(alpha|beta)-(.+)$/);
-        return prefixMatch ? prefixMatch[2] : version;
-      };
-      
-      const localBaseVersion = extractBaseVersion(localVersion);
-      const serverBaseVersion = extractBaseVersion(serverVersion);
-      
-      // Compare versions
-      const comparison = semver.compare(localBaseVersion, serverBaseVersion);
+      // Compare versions directly (no prefix needed - tag handles the distinction)
+      const comparison = semver.compare(localVersion, serverVersion);
 
       if (comparison > 0) {
         // Local version is higher - good to publish
@@ -157,55 +148,39 @@ export class VersionValidator {
     bumpType: 'patch' | 'minor' | 'major' | 'prerelease',
     releaseTag?: 'alpha' | 'beta'
   ): string {
-    // Handle alpha-x.x.x and beta-x.x.x format
-    const isVersionWithPrefix = /^(alpha|beta)-/.test(currentVersion);
-    let baseVersion = currentVersion;
-    let currentPrefix = '';
-    
-    if (isVersionWithPrefix) {
-      const match = currentVersion.match(/^(alpha|beta)-(.+)$/);
-      if (match) {
-        currentPrefix = match[1];
-        baseVersion = match[2];
-      }
-    }
-    
-    const cleaned = semver.clean(baseVersion);
+    const cleaned = semver.clean(currentVersion);
     if (!cleaned) {
       throw new Error(`Invalid version format: ${currentVersion}`);
     }
 
     let newVersion: string | null;
 
-    // Regular version bump on the base version
-    newVersion = semver.inc(cleaned, bumpType);
+    // For alpha/beta, use prerelease versions
+    if (releaseTag === 'alpha' || releaseTag === 'beta') {
+      if (bumpType === 'prerelease') {
+        newVersion = semver.inc(cleaned, 'prerelease', releaseTag);
+      } else {
+        // Convert bump type to prerelease equivalent
+        const prereleaseType = bumpType === 'patch' ? 'prepatch' : 
+                             bumpType === 'minor' ? 'preminor' : 'premajor';
+        newVersion = semver.inc(cleaned, prereleaseType as any, releaseTag);
+      }
+    } else {
+      // Regular version bump for release
+      newVersion = semver.inc(cleaned, bumpType);
+    }
 
     if (!newVersion) {
       throw new Error(`Failed to bump version ${currentVersion} with type ${bumpType}`);
-    }
-
-    // Apply release tag prefix if specified
-    if (releaseTag) {
-      return `${releaseTag}-${newVersion}`;
-    } else if (isVersionWithPrefix && !releaseTag) {
-      // Keep existing prefix if no new tag specified
-      return `${currentPrefix}-${newVersion}`;
     }
 
     return newVersion;
   }
 
   /**
-   * Validate version format (supports both x.x.x and tag-x.x.x format)
+   * Validate version format (standard semver)
    */
   static isValidVersion(version: string): boolean {
-    // Check if it's a prefixed version (alpha-x.x.x or beta-x.x.x)
-    const prefixMatch = version.match(/^(alpha|beta)-(.+)$/);
-    if (prefixMatch) {
-      return semver.valid(prefixMatch[2]) !== null;
-    }
-    
-    // Regular semantic version
     return semver.valid(version) !== null;
   }
 
@@ -213,12 +188,6 @@ export class VersionValidator {
    * Extract release tag from version string
    */
   static extractReleaseTag(version: string): 'release' | 'alpha' | 'beta' {
-    // Check for prefix format (alpha-x.x.x or beta-x.x.x)
-    const prefixMatch = version.match(/^(alpha|beta)-/);
-    if (prefixMatch) {
-      return prefixMatch[1] as 'alpha' | 'beta';
-    }
-    
     // Check semver prerelease tags
     const prerelease = semver.prerelease(version);
     if (prerelease && prerelease.length > 0) {
